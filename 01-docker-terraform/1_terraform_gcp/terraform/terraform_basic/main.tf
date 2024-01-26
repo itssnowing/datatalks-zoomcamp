@@ -9,15 +9,15 @@ terraform {
 
 provider "google" {
 # Credentials only needs to be set if you do not have the GOOGLE_APPLICATION_CREDENTIALS set
-#  credentials = 
-  project = "<Your Project ID>"
+  credentials = "../keys/my-creds.json"
+  project = "ny-taxi-411322"
   region  = "us-central1"
 }
 
 
 
 resource "google_storage_bucket" "data-lake-bucket" {
-  name          = "<Your Unique Bucket Name>"
+  name          = "ny-taxi-411322-test-bucket"
   location      = "US"
 
   # Optional, but recommended settings:
@@ -30,10 +30,10 @@ resource "google_storage_bucket" "data-lake-bucket" {
 
   lifecycle_rule {
     action {
-      type = "Delete"
+      type = "AbortIncompleteMultipartUpload"
     }
     condition {
-      age = 30  // days
+      age = 1  // days
     }
   }
 
@@ -41,8 +41,8 @@ resource "google_storage_bucket" "data-lake-bucket" {
 }
 
 
-resource "google_bigquery_dataset" "dataset" {
-  dataset_id = "<The Dataset Name You Want to Use>"
-  project    = "<Your Project ID>"
-  location   = "US"
-}
+# resource "google_bigquery_dataset" "dataset" {
+#   dataset_id = "<The Dataset Name You Want to Use>"
+#   project    = "<Your Project ID>"
+#   location   = "US"
+# }
